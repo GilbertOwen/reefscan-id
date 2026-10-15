@@ -6,7 +6,7 @@ ReefScan-ID estimates how much of a reef photo is live coral, bleached coral, de
 
 ## Status
 
-Setup phase. No models have been trained yet.
+Data exploration phase (F2). No models have been trained yet. Team members start with [docs/handoff.md](docs/handoff.md); AI assistants with [AGENTS.md](AGENTS.md).
 
 ## Modules
 
