@@ -4,9 +4,10 @@ You are helping a student team (3 members) with a graded university final projec
 
 ## The project
 
-ReefScan-ID estimates coral reef health from underwater photos and shows the result in a Streamlit app.
-- **Module A:** semantic segmentation and % cover on Coralscapes.
-- **Module B:** healthy vs bleached patch classification on the NOAA PIFSC ESD Coral Bleaching dataset.
+ReefScan-ID estimates coral reef health from a diver's photo with a cascade of two models (plan v2, adopted 2026-11-12).
+- **Stage 1:** semantic segmentation into coral / substrate / other, trained on Coralscapes (SegFormer-B0).
+- **Stage 2:** classification of points inside the coral mask as healthy / bleached / dead (EfficientNet-B0), trained on patches cut from Coralscapes plus the NOAA PIFSC ESD Coral Bleaching dataset.
+- **App:** a static web app. Both models are exported to ONNX and run in the browser; the post-processing is rewritten in JavaScript.
 - **Framework:** PyTorch, trained in Google Colab (T4 GPU).
 
 Current phase, decisions, open questions and open tasks are in `docs/handoff.md`. That file is the source of truth; do not rely on memory of earlier chats.
@@ -25,8 +26,10 @@ Current phase, decisions, open questions and open tasks are in `docs/handoff.md`
 - **Data comes from Hugging Face only.** The lecturer does not allow Kaggle datasets. Kaggle Notebooks may be used for GPU time only.
 - **Never commit raw data, processed data or checkpoints.** Processed data and checkpoints go to `/content/drive/MyDrive/ReefScan-ID/Processed` and `/content/drive/MyDrive/ReefScan-ID/Checkpoints`; the folder names are capitalised.
 - **Make every design decision from train and validation data only.** Use the test split once, at the end.
-- **Keep Coralscapes' dive-site splits** to avoid leakage.
+- **Keep Coralscapes' dive-site splits** to avoid leakage. Stage 2 patches inherit the split of the photo they were cut from.
+- **Check the export before trusting the app.** PyTorch and ONNX outputs, and Python and JavaScript post-processing, must match on the same images before deploy.
 - **Known traps:**
+  - NOAA has no dead coral class; "dead" comes only from Coralscapes patches.
   - NOAA labels may not load by default because the card's config sets `drop_labels: true`, so check what `load_dataset` returns and take the label from the folder name.
   - Coralscapes is about 5.9 GB and re-downloads in every new Colab session.
 
