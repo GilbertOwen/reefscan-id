@@ -81,7 +81,28 @@ Coralscapes EDA, section 1 (`notebooks/01_eda_coralscapes.ipynb`, run in Colab o
 | validation | 166 | 1024×2048 RGB, all images | 1024×2048 mode L, all masks |
 | test | 392 | 1024×2048 RGB, all images | 1024×2048 mode L, all masks |
 
-These match the dataset card. No model has been trained yet.
+These match the dataset card.
+
+Stage 1 mask ids and class mapping, sections 1 and 2 of `notebooks/02_stage1_segmentation.ipynb` (run in Colab, saved outputs on branch `drive-raw-data`; run date not recorded): 40 mask values found in train and validation, of which value 0 is not on the dataset card and covers 17.05% of train pixels and 13.99% of validation pixels. With the 39 to 3 mapping (value 0 ignored), the pixel shares are:
+
+| Split | Coral | Substrate | Other | Ignored (value 0) |
+|---|---|---|---|---|
+| train | 25.60% | 27.53% | 29.81% | 17.05% |
+| validation | 19.57% | 29.36% | 37.08% | 13.99% |
+
+Stage 1 SegFormer-B0 training, section 5 of `notebooks/02_stage1_segmentation.ipynb` (saved outputs on branch `drive-raw-data`, commit d92416e; run date not recorded):
+
+| Item | Value |
+|---|---|
+| Model | SegFormer-B0 from `nvidia/mit-b0` (3,714,915 parameters), 3 classes |
+| Training | 512×512 random crops, batch 8, 190 steps per epoch, 50 epochs, AdamW, learning rate 6e-5, weighted cross-entropy (weights 1.076, 1.000, 0.924) |
+| Validation | 166 photos resized to 512×1024; scored on the validation split only, the test split was not used |
+| GPU of this run | NVIDIA A100-SXM4-40GB, as printed by the Setup cell of the saved notebook |
+| Time per epoch | 85 to 87 seconds on that GPU |
+| Best epoch (by validation mIoU) | 37: mIoU 0.6775, coral IoU 0.6284, substrate IoU 0.6733, other IoU 0.7309, train loss 0.2947 |
+| Epoch 50 | mIoU 0.6680, coral IoU 0.6198, substrate IoU 0.6714, other IoU 0.7130, train loss 0.2565 |
+
+The run resumed from a checkpoint after epoch 3, so the saved output lists epochs 4 to 50 only. The best checkpoint is `best.pt` in `Checkpoints/stage1_segformer_b0`. The time per epoch was measured on an A100 and does not carry over to a T4. No other model has been trained. The reading of these results is left to the Observation cells.
 
 ## Decisions
 
