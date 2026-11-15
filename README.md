@@ -6,7 +6,7 @@ A diver photographs the reef. ReefScan-ID finds the coral in the photo, checks p
 
 ## Status
 
-Phase P1 of plan v2 (adopted 2026-11-12). No models have been trained yet. Team members start with [docs/handoff.md](docs/handoff.md); AI assistants with [AGENTS.md](AGENTS.md).
+Phase P1 of plan v2 (adopted 2026-11-12). Stage 1 (SegFormer-B0) has a first training run; the other models are not trained yet. Team members start with [docs/handoff.md](docs/handoff.md).
 
 ## How it works
 
@@ -39,4 +39,4 @@ Details, citations and how each dataset is used: [docs/data-licenses.md](docs/da
 
 ## AI usage
 
-AI assistance is recorded in [ai-log.md](ai-log.md).
+AI assistance is recorded in the team's AI usage log, which is kept outside this repository.

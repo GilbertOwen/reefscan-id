@@ -1,6 +1,6 @@
 # ReefScan-ID: team handoff
 
-Status report for the team, written 2026-10-15 and updated 2026-11-12 for plan v2 (the group's "Rencana Final Project ReefScan-ID, Draft v2"). Read this before starting any task. AI assistants: read [AGENTS.md](../AGENTS.md) as well.
+Status report for the team, written 2026-10-15 and updated 2026-11-12 for plan v2 (the group's "Rencana Final Project ReefScan-ID, Draft v2"). Read this before starting any task.
 
 ## What we are building
 
@@ -28,8 +28,8 @@ The reef sound module from the first plan is future work.
 |---|---|
 | Code, notebooks, docs | This repo: https://github.com/GilbertOwen/reefscan-id |
 | Processed data and model checkpoints | Shared Google Drive folder `ReefScan-ID`, subfolders `Checkpoints` and `Processed` (capital letters). Ask Gilbert for access |
-| Raw data | Coralscapes is downloaded from Hugging Face once and cached in the shared Drive folder `ReefScan-ID`, subfolder `RawData` (capital letters); the notebooks load it with `cache_dir` set to that folder. NOAA is loaded from Hugging Face inside Colab. Raw data is never stored in the repo |
-| AI usage log | [ai-log.md](../ai-log.md) |
+| Raw data | Coralscapes is downloaded from Hugging Face once and cached in the shared Drive folder `ReefScan-ID`, subfolder `RawData` (capital letters); the notebooks load it with `cache_dir` set to that folder. NOAA is a git clone of the Hugging Face repo, uploaded to `RawData/NOAA-PIFSC-ESD-CORAL-Bleaching-Dataset` (folders `train`, `val`, `test`; the `.git` folder is skipped by the notebooks), because loading it with `load_dataset` in Colab took about 4 hours. Raw data is never stored in the repo |
+| AI usage log | Kept outside the repo; `ai-log.md` is no longer tracked (see the 2026-11-15 decision on the AI log) |
 | Data licences and citations | [docs/data-licenses.md](data-licenses.md) |
 
 ## Phases and status
@@ -104,6 +104,16 @@ Stage 1 SegFormer-B0 training, section 5 of `notebooks/02_stage1_segmentation.ip
 
 The run resumed from a checkpoint after epoch 3, so the saved output lists epochs 4 to 50 only. The best checkpoint is `best.pt` in `Checkpoints/stage1_segformer_b0`. The time per epoch was measured on an A100 and does not carry over to a T4. No other model has been trained. The reading of these results is left to the Observation cells.
 
+NOAA dataset check, section 1 of `notebooks/03_eda_noaa.ipynb` (run in Colab on a CPU runtime, saved outputs on branch `noaa-check`, commit 2bca141; run date not recorded). The Drive copy has 10,419 images, the same as the Hub file list, and every image gets its label from its folder name:
+
+| Split | CORAL | CORAL_BL | Total |
+|---|---|---|---|
+| train | 4541 | 2751 | 7292 |
+| val | 973 | 589 | 1562 |
+| test | 974 | 591 | 1565 |
+
+Three non-image files sit at the top (`.gitattributes`, `.gitignore`, `README.md`). The path comparison shows 0 paths on Drive but not on the Hub, 0 on the Hub but not on Drive, and no repeated names.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -132,6 +142,8 @@ The run resumed from a checkpoint after epoch 3, so the saved output lists epoch
 | 2026-11-12 | App and deploy (replaces D11): custom web app, both models exported to ONNX and run in the browser, on a free static host; Streamlit Community Cloud is the fallback | Group, in plan v2; confirmed by Gilbert |
 | 2026-11-12 | Timeline: phases P1 to P4 (W11 to W14) replace F1 to F8 | Group, in plan v2; confirmed by Gilbert |
 | 2026-11-13 | Raw data on Drive: the Coralscapes download is cached in the shared Drive folder `ReefScan-ID/RawData`, and the notebooks load it with `cache_dir` set to that folder instead of downloading it in every Colab session. Amends "Drive keeps only data and checkpoints" in the 2026-10-15 row; raw data still never goes into the repo | Group; confirmed by Gilbert |
+| 2026-11-15 | NOAA raw data on Drive: the NOAA PIFSC ESD Coral Bleaching dataset is kept as a copy of the Hugging Face repo in `ReefScan-ID/RawData/NOAA-PIFSC-ESD-CORAL-Bleaching-Dataset`, and notebooks read the images from that folder, taking the split and label from the path, instead of calling `load_dataset`. Amends "NOAA is loaded from Hugging Face inside Colab" in the raw data row | Gilbert (teammates not asked) |
+| 2026-11-15 | AI log and assistant rules not in the repo: `ai-log.md` and `AGENTS.md` were removed from the tracked files on `main` (pull request 2). The AI usage log is kept outside the repo and is still copied into the report. Amends D2 ("AI log is `ai-log.md` in this repo"). The earlier versions stay in the Git history | Gilbert (teammates not asked) |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
@@ -173,7 +185,7 @@ None of this is assigned yet; agree in the group who takes what. These are the P
 
 ## Team rules
 
-- **AI log:** every time an AI tool helps, add a row to `ai-log.md`: date, part, what the AI did, key prompt, and how the output was checked. The brief makes this part of the grade.
+- **AI log:** every time an AI tool helps, add a row to the AI usage log, which is kept outside the repo: date, part, what the AI did, key prompt, and how the output was checked. The brief makes this part of the grade.
 - **Real results only:** never write a metric, result, figure or test outcome that was not produced by a run. The brief treats fabricated evidence as an integrity breach.
 - **Interpretation is human-written:** the **Observation** cells and every conclusion in the report are written by the team member, not by AI.
 - **Data hygiene:**
@@ -185,7 +197,8 @@ None of this is assigned yet; agree in the group who takes what. These are the P
 ## Dataset gotchas
 
 - **Coralscapes is about 5.9 GB.** Load it with `cache_dir` set to the Drive folder `RawData`; without `cache_dir` it downloads again in every new Colab session.
-- **NOAA labels may not load by default (not tested yet).** The dataset card's config sets `drop_labels: true` with paths that do not match the folders `train/CORAL`, `train/CORAL_BL` and so on. Check what `load_dataset` returns; the label is the folder name.
+- **NOAA labels: take them from the folder name.** The dataset card's config sets `drop_labels: true` with paths that do not match the folders `train/CORAL`, `train/CORAL_BL` and so on, and `load_dataset` printed a warning that the `images` param was ignored. Whether `load_dataset` returns the labels was not tested, because the download in Colab was stopped after hours. Notebook 03 reads the Drive copy and takes split and label from the path.
+- **Google Drive can hold two files with the same name in one folder.** The first upload of the NOAA folder left 4 extra copies in `train/CORAL`, which Colab showed with a ` (1)` suffix. They were moved to the Drive trash. After a fresh mount, the Drive listing matches the Hub file list exactly.
 - **The old NOAA link** `akridge/NOAA-ESD-CORAL-Bleaching-Dataset` redirects to `NMFS-OSI/NOAA-PIFSC-ESD-CORAL-Bleaching-Dataset`; cite the new one.
 - **NOAA's licence (Public Domain)** is stated only in the card text, not in the Hugging Face licence field.
 - **Drive subfolders are `Checkpoints`, `Processed` and `RawData`** with capital letters; Colab paths are case-sensitive.
