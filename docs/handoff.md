@@ -1,6 +1,6 @@
 # ReefScan-ID: team handoff
 
-Status report for the team, written 2026-10-15 and updated 2026-11-12 for plan v2 (the group's "Rencana Final Project ReefScan-ID, Draft v2"). Read this before starting any task.
+Status report for the team, written 2026-10-15 and updated 2026-11-12 for plan v2 and 2026-11-17 for plan v3 (the group's "Rencana Final Project ReefScan-ID, Draft v3"). Read this before starting any task.
 
 ## What we are building
 
@@ -34,42 +34,34 @@ The reef sound module from the first plan is future work.
 
 ## Phases and status
 
-Plan v2 replaces the earlier phases F1 to F8 with four weeks. The plan assumes 12 November 2026 is about week 11; match the weeks to the real course week.
+Plan v3 (the group's "Rencana Final Project ReefScan-ID, Draft v3", 14 November 2026, adopted 2026-11-17) replaces the four weeks of plan v2 with three: W12 to W14. The plan assumes 14 November 2026 is about the end of W11; match the weeks to the real course week.
 
-Done before v2: setup (repo, Drive, Colab, licence table, AI log) and section 1 of the Coralscapes EDA. As of 2026-11-12 nothing else is in the repo or the shared Drive: no model has been trained.
+Done so far: setup, the Coralscapes EDA section 1, stage 1 (class mapping, SegFormer-B0 trained), the NOAA check, the stage 2 patch dataset (notebook 04) and E3, the stage 2 data source comparison (notebook 05). See "Results so far".
 
-| Phase | Week | Model and data | App and report | Status (2026-11-12) |
-|---|---|---|---|---|
-| P1 | W11 | Class mapping, stage 2 patch dataset, baselines E1 and E2 | Web skeleton with dummy output; ONNX Runtime Web test with a public pretrained SegFormer | Not started |
-| P2 | W12 | Main models, E3, E4; ONNX export | Port post-processing to JavaScript; report outline | Not started |
-| P3 | W13 | Ablation, CAM, error analysis, real photo test | Integrate the real models, public deploy, inference time measured on a phone; report draft | Not started |
-| P4 | W14 | Final numbers | Video under 5 minutes if the brief asks for one, rubric check, submit | Not started |
+| Week | Model and data | App and report |
+|---|---|---|
+| W12 | Class mapping, patch dataset, baselines and main models for E1 and E2 | Decide static or dynamic app; app skeleton with dummy output; batch upload |
+| W13 | E3, E4, model export, core ablation | Integrate the real models, session summary and category, deploy; report draft |
+| W14 | Error analysis, CAM, real photo test | Location and DHW if time allows, video under 5 minutes, submit |
 
-Each phase has a gate that must be met before moving on:
-- **P1:**
-  - grey-case class mapping decided and written in the README;
-  - NOAA labels load correctly;
-  - patch splits follow the Coralscapes site splits;
-  - metrics fixed.
-- **P2:**
-  - best models picked on validation, then the test set used once;
-  - PyTorch and ONNX outputs match on the same images;
-  - Python and JavaScript post-processing match on the same images.
-- **P3:** the public link works on a phone; every number in the report draft traces to a run.
-- **P4:** checked against the rubric of the brief that applies.
+Gates that still apply:
+- best models picked on validation, then the test set used once;
+- PyTorch and ONNX outputs match on the same images, and Python and JavaScript post-processing match, if the static app is used;
+- the public link works; every number in the report traces to a run;
+- checked against the rubric of the brief that applies (D1).
 
-Cut first if time is short, in this order: DINOv2, the SegFormer-B2 variant, the colour correction ablation, the click-a-point feature. E4 and the end-to-end app are not cut.
+Cut first if time is short (plan v3): DHW, DINOv2, the colour correction ablation, the U-Net from scratch (replaced by a lighter baseline). E4, the per-session batch and the KepMenLH category are not cut.
 
 ## Experiments
 
 | Experiment | What is compared | Metrics |
 |---|---|---|
-| E1. Segmentation (stage 1) | Small U-Net from scratch vs pretrained SegFormer-B0 (B2 if time allows) | mIoU, IoU of the coral class |
+| E1. Segmentation (stage 1) | Small U-Net from scratch (or a lighter baseline if time is short) vs pretrained SegFormer-B0 (B2 if time allows) | mIoU, IoU of the coral class, IoU of the substrate class |
 | E2. Patch classification (stage 2) | Frozen ResNet50 + logistic regression vs fine-tuned EfficientNet-B0 (DINOv2 optional, not deployed) | Macro-F1, per-class recall, confusion matrix |
 | E3. Stage 2 data source | Train on NOAA only, Coralscapes patches only, or both; evaluate on both test sets | Macro-F1 per test set |
-| E4. End to end | Direct 5-class SegFormer vs the cascade, on the 392 Coralscapes test photos | Error in % healthy / bleached / dead cover per photo (MAE), point-level bleaching F1 |
+| E4. End to end | Direct 5-class SegFormer vs the cascade, on the 392 Coralscapes test photos, with the plan v3 points | MAE of live cover (T_live) and bleached share (P_bleached) per photo, and agreement of the KepMenLH category; ground truth from the true masks with the same points |
 
-If the cascade is not better in E4, the result is reported as it is, with an analysis of why.
+If the cascade is not better in E4, the result is reported as it is, with an analysis of why. Plan v3 adds an ablation on point density per photo (for example 30 points against more).
 
 ## Results so far
 
@@ -114,6 +106,20 @@ NOAA dataset check, section 1 of `notebooks/03_eda_noaa.ipynb` (run in Colab on 
 
 Three non-image files sit at the top (`.gitattributes`, `.gitignore`, `README.md`). The path comparison shows 0 paths on Drive but not on the Hub, 0 on the Hub but not on Drive, and no repeated names.
 
+NOAA file names, section 2 of `notebooks/03_eda_noaa.ipynb` (commit c9dccd5): 1,379 of 1,385 NOAA validation patches share a site (first file name part) with train, and 1,249 share the first three parts; a random split of the same sizes gives about the same overlap. So NOAA validation is used as exploratory only (option c).
+
+Stage 2 patches, `notebooks/04_stage2_patches.ipynb` (merged in pull request 4): 22,253 train patches (healthy 18,060, bleached 840, dead 3,353) and 2,320 Coralscapes validation patches (healthy 1,437, bleached 106, dead 777). NOAA packed into arrays: train 7,292, validation 1,562.
+
+E3, stage 2 EfficientNet-B0, sections 3 and 4 of `notebooks/05_stage2_training.ipynb` (Colab, Tesla T4, 30 epochs per run, commits 1d0c67c, b7eb508, 87adb87, comparison 28f1feb). The best epoch of every run is picked on Coralscapes validation macro-F1; `best.pt` holds that epoch in all three runs, and all runs use the same Coralscapes validation set.
+
+| Training data | Best epoch | Coralscapes val macro-F1 | Recall healthy | Recall bleached | Recall dead | NOAA val macro-F1 (exploratory) | Seconds per epoch |
+|---|---|---|---|---|---|---|---|
+| Coralscapes | 11 | 0.7713 | 0.884 | 0.585 | 0.773 | 0.572 | about 127 to 135 |
+| NOAA | 15 | 0.2738 | 0.692 | 0.642 | 0.000 | 0.866 | about 51 |
+| Both | 9 | 0.7743 | 0.884 | 0.689 | 0.722 | 0.856 | about 181 |
+
+Test sets were not used. Interpretation is in Gilbert's Observation in the notebook.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -144,36 +150,46 @@ Three non-image files sit at the top (`.gitattributes`, `.gitignore`, `README.md
 | 2026-11-13 | Raw data on Drive: the Coralscapes download is cached in the shared Drive folder `ReefScan-ID/RawData`, and the notebooks load it with `cache_dir` set to that folder instead of downloading it in every Colab session. Amends "Drive keeps only data and checkpoints" in the 2026-10-15 row; raw data still never goes into the repo | Group; confirmed by Gilbert |
 | 2026-11-15 | NOAA raw data on Drive: the NOAA PIFSC ESD Coral Bleaching dataset is kept as a copy of the Hugging Face repo in `ReefScan-ID/RawData/NOAA-PIFSC-ESD-CORAL-Bleaching-Dataset`, and notebooks read the images from that folder, taking the split and label from the path, instead of calling `load_dataset`. Amends "NOAA is loaded from Hugging Face inside Colab" in the raw data row | Gilbert (teammates not asked) |
 | 2026-11-15 | AI log and assistant rules not in the repo: `ai-log.md` and `AGENTS.md` were removed from the tracked files on `main` (pull request 2). The AI usage log is kept outside the repo and is still copied into the report. Amends D2 ("AI log is `ai-log.md` in this repo"). The earlier versions stay in the Git history | Gilbert (teammates not asked) |
+| 2026-11-17 | Plan v3 adopted (the group's Draft v3, 14 November 2026). The rows below record what it changes; the v2 rows they amend stay as written | Group, as told by Gilbert |
+| 2026-11-17 | Point sampling (replaces sampling inside the coral mask only): the app and E4 put points on a stratified grid over the whole seabed (coral and substrate), after the UPT method's 30 random points per frame. Points on substrate count as substrate; only points on coral go to stage 2; "other" (fish, water, tools) is not counted | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-17 | Unit of analysis: one dive session, many photos uploaded together. Per-photo results are details; the main output is the session average | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-17 | Health label (answers D10): live cover T_live = (healthy + bleached points) / seabed points; bleached share P_bleached = bleached / (healthy + bleached), shown separately as a warning. Category by Keputusan Menteri Negara LH No. 04 Tahun 2001 on % live cover: Buruk 0 to 24.9, Sedang 25 to 49.9, Baik 50 to 74.9, Baik sekali 75 to 100. The app says this is a rough estimate, not an official survey | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-17 | E4 metric (amends the 2026-11-12 experiments row): MAE of T_live and P_bleached per photo plus category agreement, on the 392 Coralscapes test photos, ground truth from the true masks with the same points. E1 adds substrate IoU | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-17 | Deploy (amends the 2026-11-12 app and deploy row): a static web app with ONNX in the browser only if the rubric does not require a backend, API or server and one member is comfortable with JavaScript; otherwise Streamlit Community Cloud with a limit on photos per batch | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-17 | Timeline and cuts (replaces the W11 to W14 timeline): W12 to W14. Cut first: DHW, DINOv2, the colour correction ablation, the U-Net from scratch (lighter baseline instead). Not cut: E4, the per-session batch, the KepMenLH category. Optional: location from photo EXIF or a map, and NOAA Coral Reef Watch DHW at that location | Group, in plan v3; adoption told by Gilbert |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
 ## Open questions
 
-- **Which brief applies (D1), now urgent.** The 2025/26 brief weights app 40%, report 40% and video 20%. The 2026/27 brief weights data preparation 20, model 20, analysis 20, real-world suitability 15, app 15 and AI usage 10, and has no video. Plan v2 assumes the first.
+- **Which brief applies (D1), now urgent.** The 2025/26 brief weights app 40%, report 40% and video 20%. The 2026/27 brief weights data preparation 20, model 20, analysis 20, real-world suitability 15, app 15 and AI usage 10, and has no video. Plan v3's rubric mapping (app 40%, report 40%) assumes the first.
 - **Image-only evaluation (D5).** If the 2026/27 brief applies, its section 17 asks for lecturer approval of any alternative to user testing.
 - **Lecturer checks:**
   - Are pretrained models and non-Indonesian data accepted?
   - Does a static web app with inference in the browser count as the app deliverable?
   - What is the current course week?
-- **Grey cases in the class mapping:** which stage 1 group Millepora, Turbinaria and the "other coral" classes fall into. The choice goes in the README.
-- **Stage 2 patch settings:** the crop sizes to try, and the threshold for dropping patches that mix classes.
-- **Reef health label (D10):** a published source exists: Keputusan Menteri Negara Lingkungan Hidup No. 04 Tahun 2001, Lampiran I, by % live coral cover: Buruk 0 to 24.9, Sedang 25 to 49.9, Baik 50 to 74.9, Baik sekali 75 to 100. Still to decide:
-  - whether to use these bands or show percentages only;
-  - how the app computes live coral cover from one photo. The decree's bands are for live cover of the whole area measured by line transect, not for the share of healthy points inside coral, and bleached coral is still alive.
-- **Static host:** GitHub Pages, Vercel or a Hugging Face Static Space.
+- **Static or Streamlit app:** decided by the deploy rule above (does the rubric need a backend, and is one member comfortable with JavaScript). If static: GitHub Pages, Vercel or a Hugging Face Static Space.
 - **Roles:** who takes which part.
 
 ## Work that is open now
 
-None of this is assigned yet; agree in the group who takes what. These are the P1 (W11) tasks.
+Under plan v3. Agree in the group who takes what.
 
-1. **Coralscapes EDA, sections 2 to 6** in `notebooks/01_eda_coralscapes.ipynb`: mask values and the class id to name table; pixel counts per class per split; sample images with coloured masks. The class mapping and the patch threshold depend on these.
-2. **Class mapping**, including the grey cases, written in the README.
-3. **NOAA check (`notebooks/02_eda_noaa.ipynb`, not created yet):** labels load (see the gotcha below), CORAL vs CORAL_BL counts per split, image sizes, samples per class.
-4. **Stage 2 patch dataset:** grid points inside coral pixels of each Coralscapes photo, label from the centre pixel, splits by dive site.
-5. **Baselines:** E1 (small U-Net, then SegFormer-B0) and E2 (frozen ResNet50 + logistic regression).
-6. **Web skeleton** with dummy output, and a test that ONNX Runtime Web runs a public pretrained SegFormer in a phone browser.
-7. **Questions for the lecturer** listed above.
+1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
+2. **Baselines:** E1 (a small U-Net from scratch or a lighter baseline; substrate IoU from the existing SegFormer checkpoint) and E2 (frozen ResNet50 + logistic regression on the saved patches).
+3. **Direct 5-class SegFormer** for E4 (a).
+4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
+5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
+6. **App:** decide static or Streamlit, then a skeleton with dummy output and batch upload; later the session summary with the KepMenLH category.
+7. **Lecturer questions** listed above.
+
+Claims in plan v3 that are not verified yet; check them before they go into the report:
+- NOAA photos taken 1 m above the bottom (the NOAA InPort records say one photo every 1 m along a 30 m transect; the height was not found);
+- Hadi et al. (2020), the LIPI 2019 figures;
+- Razak et al. (2026), marked unchecked in v3 itself;
+- "at least 82 countries exposed to bleaching-level heat";
+- the UPT frame of 58 x 44 cm with 30 points in CPCe (Giyanto 2013, 2014);
+- how COREMAP counts bleached coral, marked unchecked in v3 itself.
 
 ## How to start
 
