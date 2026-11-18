@@ -36,7 +36,7 @@ The reef sound module from the first plan is future work.
 
 Plan v3 (the group's "Rencana Final Project ReefScan-ID, Draft v3", 14 November 2026, adopted 2026-11-17) replaces the four weeks of plan v2 with three: W12 to W14. The plan assumes 14 November 2026 is about the end of W11; match the weeks to the real course week.
 
-Done so far: setup, the Coralscapes EDA section 1, stage 1 (class mapping, SegFormer-B0 trained), the NOAA check, the stage 2 patch dataset (notebook 04) and E3, the stage 2 data source comparison (notebook 05). See "Results so far".
+Done so far: setup, the Coralscapes EDA section 1, stage 1 (class mapping, SegFormer-B0 trained), the NOAA check, the stage 2 patch dataset (notebook 04) E3, the stage 2 data source comparison (notebook 05), and E2, the stage 2 baseline (notebook 06). See "Results so far".
 
 | Week | Model and data | App and report |
 |---|---|---|
@@ -120,6 +120,15 @@ E3, stage 2 EfficientNet-B0, sections 3 and 4 of `notebooks/05_stage2_training.i
 
 Test sets were not used. Interpretation is in Gilbert's Observation in the notebook.
 
+E2, stage 2 baseline, `notebooks/06_stage2_baseline.ipynb` (Colab, Tesla T4, commit c620d85). Frozen ResNet50 (`IMAGENET1K_V1`, pooled 2048-d features, cached in `Processed/stage2_features/resnet50`) plus a logistic regression (`class_weight="balanced"`, standardised features), trained on the Coralscapes patches only. C was picked from 1e-4 to 1 on Coralscapes validation macro-F1 and is not at the edge of the grid. Same Coralscapes validation set as E3.
+
+| Model | Coralscapes val macro-F1 | Recall healthy | Recall bleached | Recall dead |
+|---|---|---|---|---|
+| ResNet50 frozen + logistic regression, C 0.001 | 0.6641 | 0.743 | 0.651 | 0.779 |
+| EfficientNet-B0 fine-tuned, 'coralscapes' run, best epoch 11 | 0.7713 | 0.884 | 0.585 | 0.773 |
+
+Feature extraction took 76 s for train and 9 s for validation; the five logistic regression fits took about 5 minutes in total. Test sets were not used.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -157,6 +166,7 @@ Test sets were not used. Interpretation is in Gilbert's Observation in the noteb
 | 2026-11-17 | E4 metric (amends the 2026-11-12 experiments row): MAE of T_live and P_bleached per photo plus category agreement, on the 392 Coralscapes test photos, ground truth from the true masks with the same points. E1 adds substrate IoU | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-17 | Deploy (amends the 2026-11-12 app and deploy row): a static web app with ONNX in the browser only if the rubric does not require a backend, API or server and one member is comfortable with JavaScript; otherwise Streamlit Community Cloud with a limit on photos per batch | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-17 | Timeline and cuts (replaces the W11 to W14 timeline): W12 to W14. Cut first: DHW, DINOv2, the colour correction ablation, the U-Net from scratch (lighter baseline instead). Not cut: E4, the per-session batch, the KepMenLH category. Optional: location from photo EXIF or a map, and NOAA Coral Reef Watch DHW at that location | Group, in plan v3; adoption told by Gilbert |
+| 2026-11-18 | E2 data: the frozen ResNet50 + logistic regression baseline trains on Coralscapes patches only and is compared with the 'coralscapes' EfficientNet-B0 run of E3 (best epoch 11), so only the model differs; scored on Coralscapes validation, test set not used | Gilbert |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
@@ -176,7 +186,7 @@ Change a decision only after the group agrees, and add a new row instead of edit
 Under plan v3. Agree in the group who takes what.
 
 1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
-2. **Baselines:** E1 (a small U-Net from scratch or a lighter baseline; substrate IoU from the existing SegFormer checkpoint) and E2 (frozen ResNet50 + logistic regression on the saved patches).
+2. **Baselines:** E2 done (see "Results so far"). E1 still open: a small U-Net from scratch or a lighter baseline, and substrate IoU from the existing SegFormer checkpoint.
 3. **Direct 5-class SegFormer** for E4 (a).
 4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
 5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
