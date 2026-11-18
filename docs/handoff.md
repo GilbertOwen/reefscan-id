@@ -129,6 +129,15 @@ E2, stage 2 baseline, `notebooks/06_stage2_baseline.ipynb` (Colab, Tesla T4, com
 
 Feature extraction took 76 s for train and 9 s for validation; the five logistic regression fits took about 5 minutes in total. Test sets were not used.
 
+E1, stage 1 baseline, `notebooks/07_stage1_baseline.ipynb` (Colab, Tesla T4, 50 epochs, about 203 s per epoch, commit e9c65f1). U-Net from scratch, 4 levels, base width 32, AdamW 1e-3 with linear decay; same class mapping, crops and weighted loss as notebook 02. Both models are picked by best validation mIoU on the 166 Coralscapes validation photos resized to 512 by 1024; `best.pt` holds the best epoch for both.
+
+| Model | Parameters | Epochs | Best epoch | mIoU | Coral IoU | Substrate IoU | Other IoU |
+|---|---|---|---|---|---|---|---|
+| U-Net from scratch | 1,927,075 | 50 | 39 | 0.5944 | 0.4773 | 0.5957 | 0.7102 |
+| SegFormer-B0 pretrained | 3,714,915 | 50 | 37 | 0.6775 | 0.6284 | 0.6733 | 0.7309 |
+
+Test sets were not used.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -167,6 +176,7 @@ Feature extraction took 76 s for train and 9 s for validation; the five logistic
 | 2026-11-17 | Deploy (amends the 2026-11-12 app and deploy row): a static web app with ONNX in the browser only if the rubric does not require a backend, API or server and one member is comfortable with JavaScript; otherwise Streamlit Community Cloud with a limit on photos per batch | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-17 | Timeline and cuts (replaces the W11 to W14 timeline): W12 to W14. Cut first: DHW, DINOv2, the colour correction ablation, the U-Net from scratch (lighter baseline instead). Not cut: E4, the per-session batch, the KepMenLH category. Optional: location from photo EXIF or a map, and NOAA Coral Reef Watch DHW at that location | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-18 | E2 data: the frozen ResNet50 + logistic regression baseline trains on Coralscapes patches only and is compared with the 'coralscapes' EfficientNet-B0 run of E3 (best epoch 11), so only the model differs; scored on Coralscapes validation, test set not used | Gilbert |
+| 2026-11-18 | E1 baseline: a small U-Net from scratch, 4 levels, base width 32, against SegFormer-B0 (best epoch 37) on Coralscapes validation; same class mapping, crops and weighted loss as notebook 02. Training budget set from a T4 timing cell, at most 50 epochs, so the U-Net may train fewer epochs than SegFormer-B0's 50; the E1 table reports the epochs of each | Gilbert |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
@@ -186,7 +196,7 @@ Change a decision only after the group agrees, and add a new row instead of edit
 Under plan v3. Agree in the group who takes what.
 
 1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
-2. **Baselines:** E2 done (see "Results so far"). E1 still open: a small U-Net from scratch or a lighter baseline, and substrate IoU from the existing SegFormer checkpoint.
+2. **Baselines:** E1 and E2 done (see "Results so far").
 3. **Direct 5-class SegFormer** for E4 (a).
 4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
 5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
