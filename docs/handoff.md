@@ -129,6 +129,15 @@ E2, stage 2 baseline, `notebooks/06_stage2_baseline.ipynb` (Colab, Tesla T4, com
 
 Feature extraction took 76 s for train and 9 s for validation; the five logistic regression fits took about 5 minutes in total. Test sets were not used.
 
+E1, stage 1 baseline, `notebooks/07_stage1_baseline.ipynb` (Colab, Tesla T4, 50 epochs, about 203 s per epoch, commit e9c65f1). U-Net from scratch, 4 levels, base width 32, AdamW 1e-3 with linear decay; same class mapping, crops and weighted loss as notebook 02. Both models are picked by best validation mIoU on the 166 Coralscapes validation photos resized to 512 by 1024; `best.pt` holds the best epoch for both.
+
+| Model | Parameters | Epochs | Best epoch | mIoU | Coral IoU | Substrate IoU | Other IoU |
+|---|---|---|---|---|---|---|---|
+| U-Net from scratch | 1,927,075 | 50 | 39 | 0.5944 | 0.4773 | 0.5957 | 0.7102 |
+| SegFormer-B0 pretrained | 3,714,915 | 50 | 37 | 0.6775 | 0.6284 | 0.6733 | 0.7309 |
+
+Test sets were not used.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -187,7 +196,7 @@ Change a decision only after the group agrees, and add a new row instead of edit
 Under plan v3. Agree in the group who takes what.
 
 1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
-2. **Baselines:** E2 done (see "Results so far"). E1 still open: a small U-Net from scratch or a lighter baseline, and substrate IoU from the existing SegFormer checkpoint.
+2. **Baselines:** E1 and E2 done (see "Results so far").
 3. **Direct 5-class SegFormer** for E4 (a).
 4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
 5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
