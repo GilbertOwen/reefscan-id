@@ -167,6 +167,7 @@ Feature extraction took 76 s for train and 9 s for validation; the five logistic
 | 2026-11-17 | Deploy (amends the 2026-11-12 app and deploy row): a static web app with ONNX in the browser only if the rubric does not require a backend, API or server and one member is comfortable with JavaScript; otherwise Streamlit Community Cloud with a limit on photos per batch | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-17 | Timeline and cuts (replaces the W11 to W14 timeline): W12 to W14. Cut first: DHW, DINOv2, the colour correction ablation, the U-Net from scratch (lighter baseline instead). Not cut: E4, the per-session batch, the KepMenLH category. Optional: location from photo EXIF or a map, and NOAA Coral Reef Watch DHW at that location | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-18 | E2 data: the frozen ResNet50 + logistic regression baseline trains on Coralscapes patches only and is compared with the 'coralscapes' EfficientNet-B0 run of E3 (best epoch 11), so only the model differs; scored on Coralscapes validation, test set not used | Gilbert |
+| 2026-11-18 | E1 baseline: a small U-Net from scratch, 4 levels, base width 32, against SegFormer-B0 (best epoch 37) on Coralscapes validation; same class mapping, crops and weighted loss as notebook 02. Training budget set from a T4 timing cell, at most 50 epochs, so the U-Net may train fewer epochs than SegFormer-B0's 50; the E1 table reports the epochs of each | Gilbert |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
