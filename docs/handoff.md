@@ -36,7 +36,7 @@ The reef sound module from the first plan is future work.
 
 Plan v3 (the group's "Rencana Final Project ReefScan-ID, Draft v3", 14 November 2026, adopted 2026-11-17) replaces the four weeks of plan v2 with three: W12 to W14. The plan assumes 14 November 2026 is about the end of W11; match the weeks to the real course week.
 
-Done so far: setup, the Coralscapes EDA section 1, stage 1 (class mapping, SegFormer-B0 trained), the NOAA check, the stage 2 patch dataset (notebook 04) and a first stage 2 training run (notebook 05). See "Results so far".
+Done so far: setup, the Coralscapes EDA section 1, stage 1 (class mapping, SegFormer-B0 trained), the NOAA check, the stage 2 patch dataset (notebook 04) and E3, the stage 2 data source comparison (notebook 05). See "Results so far".
 
 | Week | Model and data | App and report |
 |---|---|---|
@@ -106,6 +106,20 @@ NOAA dataset check, section 1 of `notebooks/03_eda_noaa.ipynb` (run in Colab on 
 
 Three non-image files sit at the top (`.gitattributes`, `.gitignore`, `README.md`). The path comparison shows 0 paths on Drive but not on the Hub, 0 on the Hub but not on Drive, and no repeated names.
 
+NOAA file names, section 2 of `notebooks/03_eda_noaa.ipynb` (commit c9dccd5): 1,379 of 1,385 NOAA validation patches share a site (first file name part) with train, and 1,249 share the first three parts; a random split of the same sizes gives about the same overlap. So NOAA validation is used as exploratory only (option c).
+
+Stage 2 patches, `notebooks/04_stage2_patches.ipynb` (merged in pull request 4): 22,253 train patches (healthy 18,060, bleached 840, dead 3,353) and 2,320 Coralscapes validation patches (healthy 1,437, bleached 106, dead 777). NOAA packed into arrays: train 7,292, validation 1,562.
+
+E3, stage 2 EfficientNet-B0, sections 3 and 4 of `notebooks/05_stage2_training.ipynb` (Colab, Tesla T4, 30 epochs per run, commits 1d0c67c, b7eb508, 87adb87, comparison 28f1feb). The best epoch of every run is picked on Coralscapes validation macro-F1; `best.pt` holds that epoch in all three runs, and all runs use the same Coralscapes validation set.
+
+| Training data | Best epoch | Coralscapes val macro-F1 | Recall healthy | Recall bleached | Recall dead | NOAA val macro-F1 (exploratory) | Seconds per epoch |
+|---|---|---|---|---|---|---|---|
+| Coralscapes | 11 | 0.7713 | 0.884 | 0.585 | 0.773 | 0.572 | about 127 to 135 |
+| NOAA | 15 | 0.2738 | 0.692 | 0.642 | 0.000 | 0.866 | about 51 |
+| Both | 9 | 0.7743 | 0.884 | 0.689 | 0.722 | 0.856 | about 181 |
+
+Test sets were not used. Interpretation is in Gilbert's Observation in the notebook.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -161,7 +175,7 @@ Change a decision only after the group agrees, and add a new row instead of edit
 
 Under plan v3. Agree in the group who takes what.
 
-1. **Stage 2 Coralscapes training:** the 30-epoch run of `notebooks/05_stage2_training.ipynb`, then E3 (`noaa` and `both`, compared on Coralscapes validation; NOAA validation is exploratory because many NOAA val images share a file name group with train).
+1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
 2. **Baselines:** E1 (a small U-Net from scratch or a lighter baseline; substrate IoU from the existing SegFormer checkpoint) and E2 (frozen ResNet50 + logistic regression on the saved patches).
 3. **Direct 5-class SegFormer** for E4 (a).
 4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
