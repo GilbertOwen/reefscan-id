@@ -140,6 +140,19 @@ Test sets were not used.
 
 Test data, `notebooks/08_test_data.ipynb` (commits 90da88c, 16868c8), cut and saved only, nothing evaluated. Coralscapes test patches with the notebook 04 settings read from `settings.json`: 3,956 patches from 328 of 392 photos (healthy 2,926, bleached 284, dead 746), in `coralscapes_test_128.npy`, `coralscapes_test_256.npy` and `coralscapes_test_manifest.csv`; no test patch is byte-identical to a train or validation patch. NOAA test: 1,565 images (healthy 974, bleached 591) in `noaa_test_224.npy` and `noaa_test_manifest.csv`; no file name is shared with train or validation, but 1,554 test images share a site (first name part) with train, as validation does.
 
+Direct 5-class SegFormer-B0 for E4 (a), `notebooks/09_stage1_direct5.ipynb` (Colab, NVIDIA L4, 8 loader workers, about 33 s per epoch, 50 epochs, commit d8107cd). Same optimiser, crops and weighting formula as notebook 02 (weights: healthy 0.144, bleached 3.681, dead 0.963, substrate 0.110, other 0.102). Best epoch 25 by validation mIoU; `best.pt` holds it. On the 166 validation photos resized to 512 by 1024:
+
+| Model | Best epoch | mIoU | Healthy | Bleached | Dead | Substrate | Other |
+|---|---|---|---|---|---|---|---|
+| Direct 5 classes | 25 | 0.5054 | 0.5102 | 0.4030 | 0.2390 | 0.6276 | 0.7473 |
+
+| Model | mIoU | Coral | Substrate | Other |
+|---|---|---|---|---|
+| Direct 5 classes, merged to 3 | 0.6518 | 0.5816 | 0.6276 | 0.7463 |
+| SegFormer-B0 3 classes, stage 1 (epoch 37) | 0.6775 | 0.6284 | 0.6733 | 0.7309 |
+
+Test sets were not used.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -200,7 +213,7 @@ Under plan v3. Agree in the group who takes what.
 
 1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
 2. **Baselines:** E1 and E2 done (see "Results so far").
-3. **Direct 5-class SegFormer** for E4 (a).
+3. **Direct 5-class SegFormer** for E4 (a): done (see "Results so far").
 4. **Test data:** done, not evaluated (see "Results so far").
 5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
 6. **App:** decide static or Streamlit, then a skeleton with dummy output and batch upload; later the session summary with the KepMenLH category.
