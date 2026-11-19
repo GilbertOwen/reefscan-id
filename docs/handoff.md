@@ -138,6 +138,8 @@ E1, stage 1 baseline, `notebooks/07_stage1_baseline.ipynb` (Colab, Tesla T4, 50 
 
 Test sets were not used.
 
+Test data, `notebooks/08_test_data.ipynb` (commits 90da88c, 16868c8), cut and saved only, nothing evaluated. Coralscapes test patches with the notebook 04 settings read from `settings.json`: 3,956 patches from 328 of 392 photos (healthy 2,926, bleached 284, dead 746), in `coralscapes_test_128.npy`, `coralscapes_test_256.npy` and `coralscapes_test_manifest.csv`; no test patch is byte-identical to a train or validation patch. NOAA test: 1,565 images (healthy 974, bleached 591) in `noaa_test_224.npy` and `noaa_test_manifest.csv`; no file name is shared with train or validation, but 1,554 test images share a site (first name part) with train, as validation does.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -177,6 +179,7 @@ Test sets were not used.
 | 2026-11-17 | Timeline and cuts (replaces the W11 to W14 timeline): W12 to W14. Cut first: DHW, DINOv2, the colour correction ablation, the U-Net from scratch (lighter baseline instead). Not cut: E4, the per-session batch, the KepMenLH category. Optional: location from photo EXIF or a map, and NOAA Coral Reef Watch DHW at that location | Group, in plan v3; adoption told by Gilbert |
 | 2026-11-18 | E2 data: the frozen ResNet50 + logistic regression baseline trains on Coralscapes patches only and is compared with the 'coralscapes' EfficientNet-B0 run of E3 (best epoch 11), so only the model differs; scored on Coralscapes validation, test set not used | Gilbert |
 | 2026-11-18 | E1 baseline: a small U-Net from scratch, 4 levels, base width 32, against SegFormer-B0 (best epoch 37) on Coralscapes validation; same class mapping, crops and weighted loss as notebook 02. Training budget set from a T4 timing cell, at most 50 epochs, so the U-Net may train fewer epochs than SegFormer-B0's 50; the E1 table reports the epochs of each | Gilbert |
+| 2026-11-19 | Direct SegFormer for E4 (a) has 5 classes: coral healthy, coral bleached, coral dead, substrate, other, using the stage 2 state map for the coral ids and the stage 1 map for the rest. Millepora and Turbinaria pixels get the ignore label (255) in training and evaluation, as in stage 2, not healthy | Gilbert |
 
 Change a decision only after the group agrees, and add a new row instead of editing an old one.
 
@@ -198,7 +201,7 @@ Under plan v3. Agree in the group who takes what.
 1. **Stage 2 E3:** done (see "Results so far"); the test-set evaluation of E3 waits for the end, with the other test runs.
 2. **Baselines:** E1 and E2 done (see "Results so far").
 3. **Direct 5-class SegFormer** for E4 (a).
-4. **Test data:** Coralscapes test patches and a NOAA test manifest, cut but not evaluated until the end.
+4. **Test data:** done, not evaluated (see "Results so far").
 5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
 6. **App:** decide static or Streamlit, then a skeleton with dummy output and batch upload; later the session summary with the KepMenLH category.
 7. **Lecturer questions** listed above.
