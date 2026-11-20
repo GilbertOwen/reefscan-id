@@ -153,6 +153,26 @@ Direct 5-class SegFormer-B0 for E4 (a), `notebooks/09_stage1_direct5.ipynb` (Col
 
 Test sets were not used.
 
+E4, end to end, `notebooks/10_e4_end_to_end.ipynb` (Colab, NVIDIA L4), with the frozen protocol of the 2026-11-19 E4 row. MAE in percentage points; a photo counts only where the truth and the method both have the value (photo counts in brackets). Validation (sections 1 and 2, commits 50f9305, e86b56d):
+
+| Method | Points | MAE T_live | MAE P_bleached | Category agreement |
+|---|---|---|---|---|
+| Cascade | 30 | 10.296 (164) | 9.599 (128) | 0.683 (164) |
+| Direct | 30 | 12.540 (164) | 6.723 (127) | 0.665 (164) |
+| Cascade | 60 | 7.513 (164) | 9.279 (142) | 0.707 (164) |
+| Direct | 60 | 10.880 (164) | 5.968 (141) | 0.689 (164) |
+
+Test, the 392 Coralscapes test photos, run once (section 3, commit 13eb62f); 30 points is the primary result, 60 points the predefined secondary analysis. Scored points: 9,285 at 30, 18,471 at 60.
+
+| Method | Points | MAE T_live | MAE P_bleached | Category agreement |
+|---|---|---|---|---|
+| Cascade | 30 | 6.426 (377) | 5.078 (267) | 0.793 (377) |
+| Direct | 30 | 7.110 (379) | 3.600 (260) | 0.744 (379) |
+| Cascade | 60 | 5.604 (379) | 4.378 (297) | 0.826 (379) |
+| Direct | 60 | 6.594 (382) | 4.133 (292) | 0.788 (382) |
+
+Per-photo and per-point tables are in `Processed/e4`. Results describe the sampled photo interior (outer 128 px border not sampled). Interpretation is in Gilbert's Observations.
+
 ## Decisions
 
 | Date | Decision | Decided by |
@@ -216,7 +236,7 @@ Under plan v3. Agree in the group who takes what.
 2. **Baselines:** E1 and E2 done (see "Results so far").
 3. **Direct 5-class SegFormer** for E4 (a): done (see "Results so far").
 4. **Test data:** done, not evaluated (see "Results so far").
-5. **E4 notebook** with the plan v3 points and formulas, on the 392 test photos, used once.
+5. **E4:** done (see "Results so far"); the test set has been used.
 6. **App:** decide static or Streamlit, then a skeleton with dummy output and batch upload; later the session summary with the KepMenLH category.
 7. **Lecturer questions** listed above.
 
