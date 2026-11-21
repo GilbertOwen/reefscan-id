@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReefScan-ID · Estimasi kondisi terumbu karang dari foto selam</title>
+  <meta name="description" content="Unggah foto selam, ReefScan-ID menandai titik karang sehat, bleaching, dan mati lalu merangkum tutupan karang hidup per sesi (kategori KepMenLH No. 4/2001). Foto diproses di perangkat Anda.">
+  <meta name="theme-color" content="#062236">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+  <script>
+    // Register the isolation service worker once; reload one time when it takes control (see coi-sw.js)
+    if (!self.crossOriginIsolated && "serviceWorker" in navigator && location.protocol !== "file:") {
+      navigator.serviceWorker.register("coi-sw.js").then((reg) => {
+        const reloadOnce = () => { if (!sessionStorage.getItem("coi-reloaded")) { sessionStorage.setItem("coi-reloaded", "1"); location.reload(); } };
+        if (navigator.serviceWorker.controller) reloadOnce();
+        else navigator.serviceWorker.addEventListener("controllerchange", reloadOnce);
+      }).catch(() => {});
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="sr-only" href="#app">Lewati ke konten</a>
+  <div id="app" tabindex="-1"></div>
+  <div id="live" class="sr-only" aria-live="polite"></div>
+  <dialog id="dialog"></dialog>
+  <noscript><p style="padding:32px">ReefScan-ID butuh JavaScript untuk menjalankan model di perangkat Anda.</p></noscript>
+</body>
+</html>
