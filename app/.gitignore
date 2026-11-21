@@ -1,0 +1,10 @@
+node_modules/
+# made by npm install (scripts/copy-vendor.mjs)
+vendor/
+# model files: copy them from Drive ReefScan-ID/Checkpoints/onnx (models.json stays in git)
+models/*.onnx
+# Coralscapes photos are data: rebuild with test/fetch_samples.py and scripts/make_demo_samples.py
+samples/*.png
+samples-demo/*.jpg
+test/reference/
+test/out/

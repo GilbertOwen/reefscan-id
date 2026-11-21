@@ -1,0 +1,77 @@
+{
+  "source": "EPFL-ECEO/coralscapes on Hugging Face, validation split, original bytes",
+  "license": "Apache-2.0",
+  "url": "https://huggingface.co/datasets/EPFL-ECEO/coralscapes/resolve/main/data/validation-00000-of-00001.parquet",
+  "photos": [
+    {
+      "file": "coralscapes_val_000.png",
+      "validation_index": 0,
+      "original_name": "site29_000001_010000_leftImg8bit.png",
+      "bytes": 2360081,
+      "sha256": "974aeb92b86d67af53aadbfb4ea80e22249e602ac00eb2e0389868a834a6a592"
+    },
+    {
+      "file": "coralscapes_val_001.png",
+      "validation_index": 1,
+      "original_name": "site29_000002_014200_leftImg8bit.png",
+      "bytes": 2277771,
+      "sha256": "1f32818c73eaf9d2f2cf7ba0322c1ea3c98f266530585abea9100d83b8a4c04f"
+    },
+    {
+      "file": "coralscapes_val_002.png",
+      "validation_index": 2,
+      "original_name": "site30_000001_016044_leftImg8bit.png",
+      "bytes": 1786705,
+      "sha256": "3e4bd9cc2e1c8ed57589dfafc102bb56b8d795d401772e90cf08e14387577a10"
+    },
+    {
+      "file": "coralscapes_val_003.png",
+      "validation_index": 3,
+      "original_name": "site30_000002_007140_leftImg8bit.png",
+      "bytes": 1530820,
+      "sha256": "34e380020d3e2b2245ac74e58877dc21c5036d6ea5dd96e2e3ba37013b73f924"
+    },
+    {
+      "file": "coralscapes_val_004.png",
+      "validation_index": 4,
+      "original_name": "site30_000003_010050_leftImg8bit.png",
+      "bytes": 2259003,
+      "sha256": "07221840cae5e6af1e08e6a868079200cbc9b85e6cca26311432fd3c903d70c2"
+    },
+    {
+      "file": "coralscapes_val_100.png",
+      "validation_index": 100,
+      "original_name": "site30_000099_011055_leftImg8bit.png",
+      "bytes": 2303737,
+      "sha256": "39367c3ed087dafedb7580e3589a310c9cd37cbaaeb5667190f9fffd39f16a51"
+    },
+    {
+      "file": "coralscapes_val_101.png",
+      "validation_index": 101,
+      "original_name": "site30_000100_011393_leftImg8bit.png",
+      "bytes": 2712310,
+      "sha256": "ee41d1cb66ffbbe63aecc98701a98c36b8dc8e1f8f991b8a746126171ec82944"
+    },
+    {
+      "file": "coralscapes_val_102.png",
+      "validation_index": 102,
+      "original_name": "site30_000101_012043_leftImg8bit.png",
+      "bytes": 1968441,
+      "sha256": "7075ba1ffa81d1f3f1424558fd330997db295cc57489eaad04e113122b50c23b"
+    },
+    {
+      "file": "coralscapes_val_103.png",
+      "validation_index": 103,
+      "original_name": "site30_000102_017633_leftImg8bit.png",
+      "bytes": 2317531,
+      "sha256": "34d0ccfffc929b0c920babd5626a644a8a552cfed31395b16673337a70cc7ff2"
+    },
+    {
+      "file": "coralscapes_val_104.png",
+      "validation_index": 104,
+      "original_name": "site30_000103_018251_leftImg8bit.png",
+      "bytes": 2175821,
+      "sha256": "fbccb8e68784e3200a050a766ef2ed30e486f2665f6a38affb0d0874e8d3869c"
+    }
+  ]
+}

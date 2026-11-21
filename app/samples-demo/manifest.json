@@ -1,0 +1,87 @@
+{
+  "source": "EPFL-ECEO/coralscapes on Hugging Face, validation split",
+  "license": "Apache-2.0",
+  "note": "Demo photos for 'Coba dengan foto contoh'. Points use seed = validation index, as in the notebooks; the photos are JPEG, so labels can differ slightly from the notebooks' PNG run. The original PNGs for the parity test are in ../samples.",
+  "photos": [
+    {
+      "file": "coralscapes_val_101.jpg",
+      "validation_index": 101,
+      "original_name": "site30_000100_011393_leftImg8bit.png",
+      "bytes": 443039,
+      "sha256": "7370c39beb939767805c3e93c3842d2c97e7a04bc824da4d5611b3df5f2dfe65",
+      "made": "JPEG quality 90 of the original PNG"
+    },
+    {
+      "file": "coralscapes_val_141.jpg",
+      "validation_index": 141,
+      "original_name": "site6_000007_003101_leftImg8bit.png",
+      "bytes": 314704,
+      "sha256": "106dce04d46d99d8136041b7d3b90c400a7bf22d1665e775c2ea86507757d783",
+      "made": "JPEG from the Hugging Face dataset viewer of Coralscapes"
+    },
+    {
+      "file": "coralscapes_val_159.jpg",
+      "validation_index": 159,
+      "original_name": "site6_000025_020184_leftImg8bit.png",
+      "bytes": 377189,
+      "sha256": "d274b61fcfe20c7fa5e11687906a3625d91a794462873520c045409bc7a0df8a",
+      "made": "JPEG from the Hugging Face dataset viewer of Coralscapes"
+    },
+    {
+      "file": "coralscapes_val_154.jpg",
+      "validation_index": 154,
+      "original_name": "site6_000020_015689_leftImg8bit.png",
+      "bytes": 277742,
+      "sha256": "160c4e11cb4646da2856cd0b50aa98cf1b578def56aa171a864fe16f2383533c",
+      "made": "JPEG from the Hugging Face dataset viewer of Coralscapes"
+    },
+    {
+      "file": "coralscapes_val_135.jpg",
+      "validation_index": 135,
+      "original_name": "site6_000001_009800_leftImg8bit.png",
+      "bytes": 239618,
+      "sha256": "fb0cc44d9d965c7cbdfba2f0908a07bd12842c274dca869b11834c881409f9ce",
+      "made": "JPEG from the Hugging Face dataset viewer of Coralscapes"
+    },
+    {
+      "file": "coralscapes_val_102.jpg",
+      "validation_index": 102,
+      "original_name": "site30_000101_012043_leftImg8bit.png",
+      "bytes": 324472,
+      "sha256": "e2a1cc5eafbea5d54e4d9698bf79be1501a7ebf2aabac762a815a387480d8d9e",
+      "made": "JPEG quality 90 of the original PNG"
+    },
+    {
+      "file": "coralscapes_val_103.jpg",
+      "validation_index": 103,
+      "original_name": "site30_000102_017633_leftImg8bit.png",
+      "bytes": 384138,
+      "sha256": "bd3911dea5154fe2efa1de31884f362beec21abea931e15266e8d4747ccc4c37",
+      "made": "JPEG quality 90 of the original PNG"
+    },
+    {
+      "file": "coralscapes_val_004.jpg",
+      "validation_index": 4,
+      "original_name": "site30_000003_010050_leftImg8bit.png",
+      "bytes": 385634,
+      "sha256": "d2bf426e2816867a3721ff018465f89e65b49c6e56edc8f1f3f525f5869811a8",
+      "made": "JPEG quality 90 of the original PNG"
+    },
+    {
+      "file": "coralscapes_val_100.jpg",
+      "validation_index": 100,
+      "original_name": "site30_000099_011055_leftImg8bit.png",
+      "bytes": 396520,
+      "sha256": "4074843425855b8d8c5e4717a85f8bfba4af981e7cb92c1fba08abc644277ca1",
+      "made": "JPEG quality 90 of the original PNG"
+    },
+    {
+      "file": "coralscapes_val_000.jpg",
+      "validation_index": 0,
+      "original_name": "site29_000001_010000_leftImg8bit.png",
+      "bytes": 394051,
+      "sha256": "4d871f604e97967e55987a50d5c51b55eb89d93d403c44fa24886cb1db30527c",
+      "made": "JPEG quality 90 of the original PNG"
+    }
+  ]
+}
